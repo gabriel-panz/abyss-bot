@@ -13,10 +13,12 @@ const registerCommands = async () => {
   console.log("registering commands");
   if (process.env.CLIENT_ID === undefined)
     throw new Error("CLIENT_ID must not be undefined");
+  if (process.env.GUILD_ID === undefined)
+    throw new Error("GUILD_ID must not be undefined");
 
   await rest
-    .put(Routes.applicationCommands(process.env.CLIENT_ID), {
-      body: commandsList,
+    .put(Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), {
+      body: commandsList
     })
     .then(() => console.log("commands registered successfully"))
     .catch((err) => console.log(err));
