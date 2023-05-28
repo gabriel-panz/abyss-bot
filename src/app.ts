@@ -30,8 +30,6 @@ cron.schedule('* * * * *', async () => {
         ) as TextChannel
 
         if (!channel) {
-            console.log('here')
-
             timerRepository.destroy(timer.id!)
             return
         }
@@ -39,14 +37,9 @@ cron.schedule('* * * * *', async () => {
         let message = await channel.messages.fetch(timer.messageId)
 
         if (!message) {
-            console.log(timer.messageId)
-
             timerRepository.destroy(timer.id)
             return
         }
-
-        console.log(timer.latestStep)
-        console.log(timer.steps)
 
         if (timer.latestStep === timer.steps) {
             timerRepository.destroy(timer.id)

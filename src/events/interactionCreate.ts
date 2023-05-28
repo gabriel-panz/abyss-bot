@@ -8,7 +8,7 @@ const interactionCreate = (interaction: Interaction<CacheType>) => {
     if (interaction.commandName == commands[commands.timer])
         createTimer(interaction)
             .then()
-            .catch((err) => console.log(err))
+            .catch((err) => console.error(err))
 }
 
 const createTimer = async (
@@ -24,7 +24,7 @@ const createTimer = async (
                 channelId: interaction.channelId,
                 messageId: r.id,
                 tagUser: interaction.user.toString(),
-                steps: steps
+                steps: steps,
             })
     )
 }
