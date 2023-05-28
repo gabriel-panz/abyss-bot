@@ -1,16 +1,73 @@
-import { Client, IntentsBitField } from "discord.js";
-import env from "dotenv";
-import eventHandler from "./events/eventHandler";
+import { ChannelType, Client, IntentsBitField, TextChannel } from 'discord.js'
+import env from 'dotenv'
+import eventHandler from './events/eventHandler'
+import sequelize from './database/sequelize'
+import cron from 'node-cron'
+import * as timerRepository from './repositories/timerRepository'
 
-env.config();
+env.config()
+sequelize.sync()
 
 const client = new Client({
-  intents: [
-    IntentsBitField.Flags.Guilds,
-    IntentsBitField.Flags.GuildMembers,
-    IntentsBitField.Flags.GuildMessages,
-    IntentsBitField.Flags.MessageContent,
-  ],
-});
+    intents: [
+        IntentsBitField.Flags.Guilds,
+        IntentsBitField.Flags.GuildMembers,
+        IntentsBitField.Flags.GuildMessages,
+        IntentsBitField.Flags.MessageContent,
+    ],
+})
 
-eventHandler(client);
+cron.schedule('* * * * *', async () => {
+    let timers = await timerRepository.getAll()
+    if (timers.length === 0) return
+
+    timers.forEach(async (timer) => {
+        const guild = client.guilds.cache.get(String(process.env.GUILD_ID))
+        if (!guild) return
+
+        const channel = guild.channels.cache.find(
+            (c) => c.id === timer.channelId && c.type === ChannelType.GuildText
+        ) as TextChannel
+
+        if (!channel) {
+            console.log('here')
+
+            timerRepository.destroy(timer.id!)
+            return
+        }
+
+        let message = await channel.messages.fetch(timer.messageId)
+
+        if (!message) {
+            console.log(timer.messageId)
+
+            timerRepository.destroy(timer.id)
+            return
+        }
+
+        console.log(timer.latestStep)
+        console.log(timer.steps)
+
+        if (timer.latestStep === timer.steps) {
+            timerRepository.destroy(timer.id)
+            message.edit(`${timer.tagUser} hey! Acabou o tempo!`)
+        } else {
+            channel.messages
+                .fetch(timer.messageId)
+                .then((message) => {
+                    message.edit(
+                        `${timer.latestStep}/${timer.steps}, restam ${
+                            timer.steps! - timer.latestStep!
+                        } minutes.`
+                    )
+                })
+                .catch((err) => {
+                    console.error(err)
+                })
+
+            timerRepository.upStep(timer.id).then()
+        }
+    })
+})
+
+eventHandler(client)

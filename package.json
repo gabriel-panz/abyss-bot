@@ -1,24 +1,34 @@
 {
-  "name": "abyss-bot",
-  "version": "1.0.0",
-  "description": "abyss-bot",
-  "main": "app.ts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx ./src/app.ts",
-    "register-commands": "tsx ./src/registerCommands.ts"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/node": "^20.2.3",
-    "tsup": "^6.7.0",
-    "tsx": "^3.12.7",
-    "typescript": "^5.0.4"
-  },
-  "dependencies": {
-    "discord.js": "^14.11.0",
-    "dotenv": "^16.0.3",
-    "uuid": "^9.0.0"
-  }
+    "name": "abyss-bot",
+    "version": "1.0.0",
+    "description": "abyss-bot",
+    "main": "app.ts",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "tsx ./src/app.ts",
+        "register-commands": "tsx ./src/registerCommands.ts"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@types/node": "^20.2.3",
+        "tsup": "^6.7.0",
+        "tsx": "^3.12.7",
+        "typescript": "^5.0.4"
+    },
+    "dependencies": {
+        "discord.js": "^14.11.0",
+        "dotenv": "^16.0.3",
+        "moment": "^2.29.4",
+        "node-cron": "^3.0.2",
+        "sequelize": "^6.31.1",
+        "sqlite3": "^5.1.6",
+        "uuid": "^9.0.0"
+    },
+    "prettier": {
+        "trailingComma": "es5",
+        "tabWidth": 4,
+        "semi": false,
+        "singleQuote": true
+    }
 }
