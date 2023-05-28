@@ -41,25 +41,29 @@ cron.schedule('* * * * *', async () => {
             return
         }
 
-        await timerRepository.upStep(timer.id).then(() => timer.latestStep++)
+        setTimeout(async () => {
+            await timerRepository
+                .upStep(timer.id)
+                .then(() => timer.latestStep++)
 
-        if (timer.latestStep === timer.steps) {
-            timerRepository.destroy(timer.id)
-            message.edit(`${timer.tagUser} hey! Acabou o tempo!`)
-        } else {
-            channel.messages
-                .fetch(timer.messageId)
-                .then((message) => {
-                    message.edit(
-                        `${timer.latestStep}/${timer.steps}, restam ${
-                            timer.steps! - timer.latestStep!
-                        } minutes.`
-                    )
-                })
-                .catch((err) => {
-                    console.error(err)
-                })
-        }
+            if (timer.latestStep === timer.steps) {
+                timerRepository.destroy(timer.id)
+                message.edit(`${timer.tagUser} hey! Acabou o tempo!`)
+            } else {
+                channel.messages
+                    .fetch(timer.messageId)
+                    .then((message) => {
+                        message.edit(
+                            `${timer.latestStep}/${timer.steps}, restam ${
+                                timer.steps! - timer.latestStep!
+                            } minutes.`
+                        )
+                    })
+                    .catch((err) => {
+                        console.error(err)
+                    })
+            }
+        }, timer.secondsOffset * 1000)
     })
 })
 

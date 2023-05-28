@@ -50,6 +50,10 @@ export const Timer = sequelize.define<Model<TimerType, TimerType>>('Timer', {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    secondsOffset: {
+        type: DataTypes.NUMBER,
+        allowNull: false,
+    },
 })
 
 export default sequelize

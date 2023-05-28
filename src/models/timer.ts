@@ -8,6 +8,7 @@ type TimerType = {
     channelId: string
     messageId: string
     tagUser: string
+    secondsOffset: number
 }
 
 export default TimerType
