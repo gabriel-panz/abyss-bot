@@ -41,6 +41,8 @@ cron.schedule('* * * * *', async () => {
             return
         }
 
+        await timerRepository.upStep(timer.id).then(() => timer.latestStep++)
+
         if (timer.latestStep === timer.steps) {
             timerRepository.destroy(timer.id)
             message.edit(`${timer.tagUser} hey! Acabou o tempo!`)
@@ -57,8 +59,6 @@ cron.schedule('* * * * *', async () => {
                 .catch((err) => {
                     console.error(err)
                 })
-
-            timerRepository.upStep(timer.id).then()
         }
     })
 })
