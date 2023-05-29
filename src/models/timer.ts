@@ -7,7 +7,9 @@ type TimerType = {
     endDate: Date
     channelId: string
     messageId: string
+    messageValue?: string
     tagUser: string
+    tagRole?: string
     secondsOffset: number
 }
 

@@ -15,6 +15,7 @@ const createTimer = async (
     interaction: ChatInputCommandInteraction<CacheType>
 ) => {
     let steps = Number(interaction.options.get('minutos')?.value)
+    let role = interaction.options.get('role')
 
     await interaction.reply(`0 / ${steps}, restam ${steps} minutos.`)
 
@@ -25,6 +26,8 @@ const createTimer = async (
                 messageId: r.id,
                 tagUser: interaction.user.toString(),
                 steps: steps,
+                tagRole: interaction.options.get('role')?.role?.toString(),
+                messageValue: interaction.options.get('message')?.value?.toString()
             })
     )
 }

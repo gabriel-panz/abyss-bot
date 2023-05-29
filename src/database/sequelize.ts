@@ -46,9 +46,17 @@ export const Timer = sequelize.define<Model<TimerType, TimerType>>('Timer', {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    messageValue: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
     tagUser: {
         type: DataTypes.STRING,
         allowNull: false,
+    },
+    tagRole: {
+        type: DataTypes.STRING,
+        allowNull: true,
     },
     secondsOffset: {
         type: DataTypes.NUMBER,

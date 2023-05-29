@@ -11,8 +11,16 @@ export const create = async (timer: {
     steps?: number
     stepLengthInMinutes?: number
     startDate?: Date
+    tagRole?: string
+    messageValue?: string
 }): Promise<Model<any, any>> => {
-    let startDate = timer.startDate ?? new Date();
+    let startDate = timer.startDate ?? new Date()
+    let endDate = moment(new Date())
+        .add(
+            // calculates it based on the amount of steps * step length
+            (timer.stepLengthInMinutes ?? 1) * (timer.steps ?? 20), 'm'
+        )
+        .toDate()
 
     return await Timer.create({
         id: uuidV4(),
@@ -20,16 +28,13 @@ export const create = async (timer: {
         steps: timer.steps ?? 20,
         stepLengthInMinutes: timer.stepLengthInMinutes ?? 1,
         startDate: startDate,
-        endDate: moment(new Date())
-            .add(
-                // calculates it based on the amount of steps * step length
-                (timer.stepLengthInMinutes ?? 1) * (timer.steps ?? 20)
-            )
-            .toDate(),
+        endDate: endDate,
         channelId: timer.channelId,
         messageId: timer.messageId,
+        messageValue: timer.messageValue,
         tagUser: timer.tagUser,
-        secondsOffset: moment(startDate).second()
+        tagRole: timer.tagRole,
+        secondsOffset: moment(startDate).second(),
     })
 }
 
